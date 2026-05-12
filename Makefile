@@ -11,17 +11,17 @@ TARGET 		:= ./output/make_me
 .PHONY: all clean
 
 all: final
-	./$(TARGET)
+	$(TARGET)
 
 final: main.o
 	$(CC) \
 		$(PROJECT_ROOT)/main.cpp \
 		-o $(TARGET)
 
-main.o: $(PROJECT_ROOT)/main.cpp
+%.o: $(PROJECT_ROOT)/%.cpp
 	$(CC) $(CFLAGS) \
-		$(PROJECT_ROOT)/main.cpp \
-		-o $(OBJECT_ROOT)/main.o
+		$< \
+		-o $(OBJECT_ROOT)/$@
 
 clean:
 	@echo clear
