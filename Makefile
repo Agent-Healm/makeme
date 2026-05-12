@@ -1,23 +1,30 @@
 # 
-CC	:= g++
-# CFLAGS	:= -Wall -Wextra
+CC		:= g++
+CFLAGS		:= -Wall -Wextra
 
-TARGET 	:= make_me
+OBJECT_ROOT	:= ./obj
+PROJECT_ROOT	:= ./src
+
+TARGET 		:= ./output/make_me
+
 
 .PHONY: all clean
 
 all: final
-	@echo all
 	./$(TARGET)
 
 final: main.o
-	@echo final
-	$(CC) main.cpp -o $(TARGET)
+	$(CC) \
+		$(PROJECT_ROOT)/main.cpp \
+		-o $(TARGET)
 
-main.o: main.cpp
-	@echo compiling main.cpp
-	$(CC) main.cpp -o main.o
+main.o: $(PROJECT_ROOT)/main.cpp
+	$(CC) $(CFLAGS) \
+		$(PROJECT_ROOT)/main.cpp \
+		-o $(OBJECT_ROOT)/main.o
 
 clean:
 	@echo clear
-	rm -rf *.o $(TARGET)
+	rm -rf \
+		$(TARGET) \
+		$(OBJECT_ROOT)/*
