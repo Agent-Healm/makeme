@@ -1,5 +1,5 @@
 // #include <iostream>
 
-int addint(int a, int b){
+int add2int(int a, int b){
         return a + b;
 }

@@ -6,7 +6,7 @@ int main(){
 
         std::cout<<"Hello world" << std::endl;
         std::cout<<"Func Hpp : " << add(2, 5) <<"\n";
-        std::cout<<"Add Int : "<< addint(3, 4) <<"\n";
+        std::cout<<"Add Int : "<< add2int(3, 8) <<"\n";
         return 0;
 
 }

@@ -10,7 +10,8 @@ CXXFLAGS	:= -Wall -Iinclude
 OBJECT_ROOT	:= ./obj
 PROJECT_ROOT	:= ./src
 INCLUDE_ROOT	:= ./include
-TARGET 		:= ./output/make_me
+OUTPUT_ROOT	:= ./output
+TARGET 		:= $(OUTPUT_ROOT)/make_me
 
 
 .PHONY: all clean
@@ -21,47 +22,36 @@ TARGET 		:= ./output/make_me
 # CXXSRC 	:= $(wildcard /*.cpp)
 
 CXXSRC 		:= $(shell find $(PROJECT_ROOT) -name "*.cpp")
-CXXOBJ		:= $(CXXSRC:.cpp=.o)
-# CXXOBJ2		:= $(notdir $(CXXOBJ))
 
-# all: final
-# 	$(TARGET)
+# CXXOBJ		:= $(CXXSRC:.cpp=.o)
+# CXXOBJ2		:= $(notdir $(CXXOBJ))
+CXXOBJ := $(patsubst ./src/%.cpp, ./obj/%.o, $(CXXSRC))
+
+
+all: final
+	$(TARGET)
 
 # final: main.o
-# 	$(CXX) $(CXXFLAGS) \
-# 		$(OBJECT_ROOT)/main.o \
-# 		-o $(TARGET)
+# 		$(OBJECT_ROOT)/main.o
+final: $(CXXOBJ)
+	@mkdir -p $(OUTPUT_ROOT)
+	$(CXX) $(CXXFLAGS) \
+		$(CXXOBJ) \
+		-o $(TARGET)
 
 # %.o: $(PROJECT_ROOT)/%.cpp 
 # 	$(CXX) $(CXXFLAGS) \
 # 		-c $< \
 # 		-o $(OBJECT_ROOT)/$@
-
-# show:
-# 	@echo sources: $(CXXSRC)
-# 	@echo objects: $(CXXOBJ)
-# 	@echo objects: $(CXXOBJ)
-
-# c: main.o addint.o subint.o
-
-CXXOBJ2 := $(patsubst ./src/%.cpp, ./obj/%.o, $(CXXSRC))
-
-# test: 
-# 	@echo $(CXXOBJ)
-# 	@echo $(CXXOBJ2)
-
-# all: $(CXXOBJ)
-all: $(CXXOBJ2)
-
 $(OBJECT_ROOT)/%.o: ./$(PROJECT_ROOT)/%.cpp 
 # 	@echo $< to $@ 
-	mkdir -p $(dir $@)
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) \
 		-c $< \
 		-o $@
 
 clean:
 	@echo clear
-	rm -rf \
-		$(TARGET) \
+	@rm -rf \
+		$(OUTPUT_ROOT)/* \
 		$(OBJECT_ROOT)/*
