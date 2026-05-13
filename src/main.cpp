@@ -1,6 +1,6 @@
 #include <iostream>
 #include "func.hpp"
-#include "addint.cpp"
+#include "addint.hpp"
 
 int main(){
 
