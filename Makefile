@@ -39,7 +39,9 @@ $(OBJECT_ROOT)/%.o: ./$(PROJECT_ROOT)/%.cpp
 		-o $@
 
 clean:
-	@echo clear
+	@echo clean
 	@rm -rf \
 		$(OUTPUT_ROOT)/* \
 		$(OBJECT_ROOT)/*
+
+remake: clean all
