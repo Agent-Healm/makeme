@@ -2,8 +2,8 @@
 CXX		:= g++
 CXXFLAGS	:= -Wall -Iinclude -Wextra
 
-# Dependency flags
-# DEPFLAGS	:= -MMD -MP
+# Automatic dependency flags
+DEPFLAGS	:= -MMD -MP
 
 # Directories
 OBJECT_ROOT	:= ./obj
@@ -14,18 +14,21 @@ TARGET 		:= $(OUTPUT_ROOT)/make_me
 
 # CPP files
 CXXSRC 		:= $(shell find $(PROJECT_ROOT) -name "*.cpp")
-CXXOBJ		:= $(patsubst ./src/%.cpp, ./obj/%.o, $(CXXSRC))
+CXXOBJ		:= $(patsubst $(PROJECT_ROOT)/%.cpp, $(OBJECT_ROOT)/%.o, $(CXXSRC))
+
+# .d files
+DEPS		:= $(CXXOBJ:.o=.d)
 
 # these targets don't output a new file, mark them as phony
 # without these, a file named "clean" would block the makefile target from ever executing
-.PHONY: all clean
+.PHONY: all clean show find
 
 
 
 
 
 all: final
-	$(TARGET)
+	@$(TARGET)
 
 final: $(CXXOBJ)
 	@mkdir -p $(OUTPUT_ROOT)
@@ -33,10 +36,11 @@ final: $(CXXOBJ)
 		$(CXXOBJ) \
 		-o $(TARGET)
 
-$(OBJECT_ROOT)/%.o: ./$(PROJECT_ROOT)/%.cpp 
+$(OBJECT_ROOT)/%.o: $(PROJECT_ROOT)/%.cpp
 # 	@echo $< to $@ 
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) \
+# 	$(CXX) $(CXXFLAGS) 
+	$(CXX) $(CXXFLAGS) $(DEPFLAGS) \
 		-c $< \
 		-o $@
 
@@ -46,4 +50,17 @@ clean:
 		$(OUTPUT_ROOT)/* \
 		$(OBJECT_ROOT)/*
 
+show:
+	@echo sources: $(CXXSRC)
+	@echo object: $(CXXOBJ)
+
+find:
+	@find $(PROJECT_ROOT) -name "*.cpp"
+
 remake: clean all
+
+
+
+
+
+-include $(DEPS)
