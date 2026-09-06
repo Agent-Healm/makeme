@@ -16,6 +16,8 @@ TARGET 		:= $(OUTPUT_ROOT)/make_me
 CXXSRC 		:= $(shell find $(PROJECT_ROOT) -name "*.cpp")
 CXXOBJ		:= $(patsubst ./src/%.cpp, ./obj/%.o, $(CXXSRC))
 
+# these targets don't output a new file, mark them as phony
+# without these, a file named "clean" would block the makefile target from ever executing
 .PHONY: all clean
 
 
